@@ -2,8 +2,10 @@
 
 /**
  * @title DelegatedERC20ClaimWithBurn.sol.
- *
- * Implementation of an ERC20 claim mechansism. This contract uses a merkle tree to authorise
+ */
+
+/**
+ * @notice Implementation of an ERC20 claim mechansism. This contract uses a merkle tree to authorise
  * claims from allowlist addresses, including claims made from delegated addresses. In all cases
  * the allowance from the leaf in the tree is distributed to the allowance holder NOT the delegate.
  * The delegate in the leaf merely informs the contract of the address that can make the call. In
@@ -19,8 +21,10 @@
  * The claim period has a start and end date. Claims cannot be made before the start date or after the end
  * date. After the end date anyone can call the contract to burn unclaimed token.
  *
- * Note that for burning to work the claimable ERC20 must be burnable using ERC20Burnable.
- *
+ * For burning to work the claimable ERC20 must be burnable using ERC20Burnable.
+ */
+
+/**
  * @author omnus (https://omn.us)
  */
 
@@ -195,7 +199,7 @@ contract DelegatedERC20ClaimWithBurn is IDelegatedERC20ClaimWithBurn {
    * case where the caller is a delegate of the allowance holder. But they need to have an unclaimed
    * allowance, i.e. initial allowance - claimed allowance > 0.
    * @param allowanceAmount_ The initial allowance that this holder is entitled to.
-   * Note: Leaf format is allowanceHolder | delegate | allowanceAmount
+   * Leaf format is allowanceHolder | delegate | allowanceAmount
    * @param caller_ The msg.sender on this txn.
    */
   function checkMerkleTree(
