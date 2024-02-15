@@ -17,7 +17,7 @@
  * Leaf format is allowanceHolder | delegate | allowanceAmount
  *
  * The claim period has a start and end date. Claims cannot be made before the start date or after the end
- * date. After the end date anyone can call the contrac to burn unclaimed token.
+ * date. After the end date anyone can call the contract to burn unclaimed token.
  *
  * Note that for burning to work the claimable ERC20 must be burnable using ERC20Burnable.
  *
@@ -26,9 +26,9 @@
 
 pragma solidity 0.8.24;
 
-// Interface for this contract:
+// Interface for this contract.
 import {IDelegatedERC20ClaimWithBurn} from "./IDelegatedERC20ClaimWithBurn.sol";
-// OZ's SafeERC20
+// OZ's SafeERC20.
 import {IERC20, SafeERC20} from "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 // Interface for OZ ERC20Burnable
 import {IERC20Burnable} from "../OpenZeppelin/IERC20Burnable.sol";
@@ -45,14 +45,14 @@ contract DelegatedERC20ClaimWithBurn is IDelegatedERC20ClaimWithBurn {
   // The merkle root is set on the constructor.
   bytes32 public immutable merkleRoot;
 
-  // The start date for claims. Before this point claims cannot be made.
+  // The start date for claims. Before this point claims cannot be made. Set in the constructor.
   uint256 public immutable claimStart;
 
-  // The end date for claims. After this point claims are CLOSED and remaining tokens
+  // The end date for claims. After this point claims are CLOSED and remaining tokens held in this contract
   // can be burnt by ANYONE.
   uint256 public immutable claimEnd;
 
-  // claimedAmount: The amount that a given address has already claimed.
+  // claimedAmount: The amount that a given allowance holder has already claimed.
   mapping(address => uint256) public claimedAmount;
 
   /**
@@ -60,9 +60,8 @@ contract DelegatedERC20ClaimWithBurn is IDelegatedERC20ClaimWithBurn {
    *
    * @param claimableERC20_ The address of the ERC20 being claimed
    * @param merkleRoot_ Merkle root for the allowlist
-   * @param claimStart_ The timestamp after which claims can occur.
-   * @param claimEnd_ The timestamp after which claims cannot occur, and remaining
-   * balance can be burned
+   * @param claimStart_ The timestamp after which claims can occur
+   * @param claimEnd_ The timestamp after which claims cannot occur, and remaining balance can be burned
    */
   constructor(
     address claimableERC20_,
@@ -189,14 +188,14 @@ contract DelegatedERC20ClaimWithBurn is IDelegatedERC20ClaimWithBurn {
   /**
    * @dev checkMerkleTree
    *
-   * An public method to check if a leaf hash and proof pass the merkle check. It will revert if it does not.
+   * A public method to check if a leaf hash and proof pass the merkle check. It will revert if it does not.
    *
    * @param proof_ The provided proof
    * @param allowanceHolder_ The address that holds an allowance. This need not be the caller, in the
    * case where the caller is a delegate of the allowance holder. But they need to have an unclaimed
    * allowance, i.e. initial allowance - claimed allowance > 0.
    * @param allowanceAmount_ The initial allowance that this holder is entitled to.
-   * Leaf format is allowanceHolder | delegate | allowanceAmount
+   * Note: Leaf format is allowanceHolder | delegate | allowanceAmount
    * @param caller_ The msg.sender on this txn.
    */
   function checkMerkleTree(
@@ -231,7 +230,8 @@ contract DelegatedERC20ClaimWithBurn is IDelegatedERC20ClaimWithBurn {
   /**
    * @dev _checkRemainingAllowance
    *
-   * An internal method to check
+   * An internal method to check that the allowance holder will not receive more token than their
+   * total allowance.
    *
    * @param allowanceHolder_ The address that holds an allowance. This need not be the caller, in the
    * case where the caller is a delegate of the allowance holder. But they need to have an unclaimed
@@ -267,9 +267,7 @@ contract DelegatedERC20ClaimWithBurn is IDelegatedERC20ClaimWithBurn {
   /**
    * @dev _distributeClaim
    *
-   * An internal method to transfer ERC20 to the allowance holder. Note this assumes that
-   * this is implemented directly within an ERC20 contract, whereby it holds the balance
-   * being claimed.
+   * An internal method to transfer ERC20 to the allowance holder.
    *
    * @param allowanceHolder_ The address for which the allowance has been claimed.
    * @param allowanceClaimed_ The amount of token that has been claimed.

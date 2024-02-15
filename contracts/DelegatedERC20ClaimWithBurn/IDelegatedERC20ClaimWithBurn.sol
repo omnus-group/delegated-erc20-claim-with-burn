@@ -82,14 +82,14 @@ interface IDelegatedERC20ClaimWithBurn {
   /**
    * @dev checkMerkleTree
    *
-   * An public method to check if a leaf hash and proof pass the merkle check. It will revert if it does not.
+   * A public method to check if a leaf hash and proof pass the merkle check. It will revert if it does not.
    *
    * @param proof_ The provided proof
    * @param allowanceHolder_ The address that holds an allowance. This need not be the caller, in the
    * case where the caller is a delegate of the allowance holder. But they need to have an unclaimed
    * allowance, i.e. initial allowance - claimed allowance > 0.
    * @param allowanceAmount_ The initial allowance that this holder is entitled to.
-   * Leaf format is allowanceHolder | delegate | allowanceAmount
+   * Note: Leaf format is allowanceHolder | delegate | allowanceAmount
    * @param caller_ The msg.sender on this txn.
    */
   function checkMerkleTree(
