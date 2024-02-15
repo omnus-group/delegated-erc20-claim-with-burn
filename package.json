@@ -1,0 +1,19 @@
+{
+  "name": "delegated-erc20-claim-with-burn",
+  "version": "1.0.0",
+  "description": "erc20 claim including from delegated addresses",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "the omnus group",
+  "license": "ISC",
+  "devDependencies": {
+    "@nomicfoundation/hardhat-toolbox": "^4.0.0",
+    "@openzeppelin/contracts": "^5.0.1",
+    "dotenv": "^16.4.1",
+    "hardhat": "^2.19.5",
+    "hardhat-gas-reporter": "^1.0.10",
+    "merkletreejs": "^0.3.11"
+  }
+}
