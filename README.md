@@ -5,6 +5,20 @@ Abstract contract for claiming an ERC20 allowance, both as the allowance holder 
 Note - in ALL cases the allowance goes to the allowance holder. A delegate is merely authorised to submit a claim
 transaction (useful when allowlists addresses are in the deep freeze).
 
+## TLDR
+
+- Construct merkle trees with leaves of allowanceAddress | callerAddress | allowance
+- The callerAddress can call the contract to claim the allowance to the allowanceAddress
+- allowanceAddress and callerAddress can be the same.
+- allowanceAddress and callerAddress can be different, meaning 0x1 can claim tokens to 0x2 without 0x2 going hot.
+- You can have multiple leaves per allowance. e.g. this:
+  0x1 | 0x1 | 1000
+  0x1 | 0x2 | 1000
+  Means that either 0x1 or 0x2 can call to claim allowance to 0x1.
+- Set an open and close date. After claims close, anyone can burn remaining token in this contract.
+
+## Longer version
+
 Implementation of an ERC20 claim mechansism. This contract uses a merkle tree to authorise
 claims from allowlist addresses, including claims made from delegated addresses. In all cases
 the allowance from the leaf in the tree is distributed to the allowance holder NOT the delegate.
