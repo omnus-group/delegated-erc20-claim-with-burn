@@ -7,14 +7,14 @@ transaction (useful when allowlists addresses are in the deep freeze).
 
 ## TLDR
 
-- Construct merkle trees with leaves of allowanceAddress | callerAddress | allowance
-- The callerAddress can call the contract to claim the allowance to the allowanceAddress
-- allowanceAddress and callerAddress can be the same.
-- allowanceAddress and callerAddress can be different, meaning 0x1 can claim tokens to 0x2 without 0x2 going hot.
+- Construct merkle trees with leaves of allowanceAddress | delegateAddress | allowance.
+- The delegateAddress can call the contract to claim the allowance to the allowanceAddress.
+- allowanceAddress and delegateAddress can be the same.
+- allowanceAddress and delegateAddress can be different, meaning 0x1 can claim tokens to 0x2 without 0x2 going hot.
 - You can have multiple leaves per allowance. e.g. this:
-  0x1 | 0x1 | 1000
-  0x1 | 0x2 | 1000
-  Means that either 0x1 or 0x2 can call to claim allowance to 0x1.
+  - 0x1 | 0x1 | 1000
+  - 0x1 | 0x2 | 1000
+  - Means that either 0x1 or 0x2 can call to claim allowance to 0x1.
 - Set an open and close date. After claims close, anyone can burn remaining token in this contract.
 
 ## Longer version
