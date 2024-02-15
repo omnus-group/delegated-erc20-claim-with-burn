@@ -89,7 +89,7 @@ interface IDelegatedERC20ClaimWithBurn {
    * case where the caller is a delegate of the allowance holder. But they need to have an unclaimed
    * allowance, i.e. initial allowance - claimed allowance > 0.
    * @param allowanceAmount_ The initial allowance that this holder is entitled to.
-   * Note: Leaf format is allowanceHolder | delegate | allowanceAmount
+   * Leaf format is allowanceHolder | delegate | allowanceAmount
    * @param caller_ The msg.sender on this txn.
    */
   function checkMerkleTree(

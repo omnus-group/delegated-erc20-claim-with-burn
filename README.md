@@ -5,6 +5,24 @@ Abstract contract for claiming an ERC20 allowance, both as the allowance holder 
 Note - in ALL cases the allowance goes to the allowance holder. A delegate is merely authorised to submit a claim
 transaction (useful when allowlists addresses are in the deep freeze).
 
+Implementation of an ERC20 claim mechansism. This contract uses a merkle tree to authorise
+claims from allowlist addresses, including claims made from delegated addresses. In all cases
+the allowance from the leaf in the tree is distributed to the allowance holder NOT the delegate.
+The delegate in the leaf merely informs the contract of the address that can make the call. In
+the case where there is no delegate this will be the allowance holder, i.e. the allowance holder
+address is in the tree as both the allowance holder and the delegate.
+
+A single allowance can potentially be represented by multiple leafs, since the claimed balance is
+tracked against the allowance holder address. This allows a tree structure whereby an allowance holder
+can claim from their own address, or with a call from a delegated address, or even delegated addresses.
+
+Leaf format is allowanceHolder | delegate | allowanceAmount
+
+The claim period has a start and end date. Claims cannot be made before the start date or after the end
+date. After the end date anyone can call the contract to burn unclaimed token.
+
+For burning to work the claimable ERC20 must be burnable using ERC20Burnable.
+
 # Solidity API
 
 ## DelegatedERC20ClaimWithBurn
@@ -298,12 +316,12 @@ A public method to check if a leaf hash and proof pass the merkle check. It will
 
 #### Parameters
 
-| Name              | Type      | Description                                                                                                                                                                                                                          |
-| ----------------- | --------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | -------- | --------------- |
-| proof\_           | bytes32[] | The provided proof                                                                                                                                                                                                                   |
-| allowanceHolder\_ | address   | The address that holds an allowance. This need not be the caller, in the case where the caller is a delegate of the allowance holder. But they need to have an unclaimed allowance, i.e. initial allowance - claimed allowance gt 0. |
-| allowanceAmount\_ | uint256   | The initial allowance that this holder is entitled to. Note: Leaf format is allowanceHolder                                                                                                                                          | delegate | allowanceAmount |
-| caller\_          | address   | The msg.sender on this txn.                                                                                                                                                                                                          |
+| Name              | Type      | Description                                                                                                                                                                                                                         |
+| ----------------- | --------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------- | --------------- |
+| proof\_           | bytes32[] | The provided proof                                                                                                                                                                                                                  |
+| allowanceHolder\_ | address   | The address that holds an allowance. This need not be the caller, in the case where the caller is a delegate of the allowance holder. But they need to have an unclaimed allowance, i.e. initial allowance - claimed allowance > 0. |
+| allowanceAmount\_ | uint256   | The initial allowance that this holder is entitled to. Leaf format is allowanceHolder                                                                                                                                               | delegate | allowanceAmount |
+| caller\_          | address   | The msg.sender on this txn.                                                                                                                                                                                                         |
 
 ### burnUnclaimed
 

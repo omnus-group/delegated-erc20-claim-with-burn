@@ -295,7 +295,7 @@ A public method to check if a leaf hash and proof pass the merkle check. It will
 | ---- | ---- | ----------- |
 | proof_ | bytes32[] | The provided proof |
 | allowanceHolder_ | address | The address that holds an allowance. This need not be the caller, in the case where the caller is a delegate of the allowance holder. But they need to have an unclaimed allowance, i.e. initial allowance - claimed allowance > 0. |
-| allowanceAmount_ | uint256 | The initial allowance that this holder is entitled to. Note: Leaf format is allowanceHolder | delegate | allowanceAmount |
+| allowanceAmount_ | uint256 | The initial allowance that this holder is entitled to. Leaf format is allowanceHolder | delegate | allowanceAmount |
 | caller_ | address | The msg.sender on this txn. |
 
 ### burnUnclaimed
