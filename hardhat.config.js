@@ -3,6 +3,7 @@ require("dotenv").config()
 require("@nomicfoundation/hardhat-toolbox")
 require("hardhat-gas-reporter")
 require("@nomicfoundation/hardhat-verify")
+require("solidity-docgen")
 // require("hardhat-etherscan-abi")
 
 const TESTNETS_PRIVATE_KEY = process.env.TESTNETS_PRIVATE_KEY

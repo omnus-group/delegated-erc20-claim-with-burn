@@ -14,6 +14,7 @@
     "dotenv": "^16.4.1",
     "hardhat": "^2.19.5",
     "hardhat-gas-reporter": "^1.0.10",
-    "merkletreejs": "^0.3.11"
+    "merkletreejs": "^0.3.11",
+    "solidity-docgen": "^0.6.0-beta.36"
   }
 }
