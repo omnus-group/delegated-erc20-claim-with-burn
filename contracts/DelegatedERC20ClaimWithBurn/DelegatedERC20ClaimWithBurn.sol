@@ -186,7 +186,7 @@ contract DelegatedERC20ClaimWithBurn is IDelegatedERC20ClaimWithBurn {
 
     _distributeClaim(allowanceHolder_, claimAmount_);
 
-    emit AllowanceClaimed(allowanceHolder_, allowanceAmount_);
+    emit AllowanceClaimed(allowanceHolder_, claimAmount_);
   }
 
   /**
